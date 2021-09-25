@@ -1,6 +1,5 @@
 import numpy as np
 from collections.abc import Iterable
-from numpy.random import random
 
 class SBGenGA:
 

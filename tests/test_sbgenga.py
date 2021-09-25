@@ -15,7 +15,7 @@ TESTWINNERS = np.array([0, 1])
 
 
 def test_init():
-    ga = SBGenGA(FFUNC, POPSIZE, GENESIZE, MUTPROB SBSIZE, DORMPROB, DEMESIZE, ALPHABET, RANDOMSEED)
+    ga = SBGenGA(FFUNC, POPSIZE, GENESIZE, MUTPROB, SBSIZE, DORMPROB, DEMESIZE, ALPHABET, RANDOMSEED)
     # get a bunch of flags
     pop_shape = ga.population.shape == (POPSIZE, GENESIZE)
     gene_probs = ga.pmutate == MUTPROB
