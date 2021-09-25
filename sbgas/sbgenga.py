@@ -1,7 +1,7 @@
 import numpy as np
 from collections.abc import Iterable
 
-class SBGenGA:
+class DiscreteSBGenGA:
 
     def __init__(self, fitness_function, population_size, genome_size,
                  mutation_prob, recombination_prob, seed_bank_size, dormant_prob,
@@ -42,5 +42,9 @@ class SBGenGA:
             winners = self.rng.choice(self.population.shape[0],
                                       size=num_winners,
                                       p=win_prob)
+            
+        # I guess we're just going to accept that we replace only 
+        # num_winner / 2 "losers" for now. one per "sexual pair"
+        
 
         

@@ -1,7 +1,7 @@
 import numpy as np
 
 
-class SBMGA:
+class DiscreteSBMGA:
     def __init__(self, fitness_function, pop_size, genome_size, mut_prob,
                  rec_prob, sb_size, dorm_prob, deme_size, alphabet, random_seed=None):
         """
