@@ -42,9 +42,29 @@ class DiscreteSBGenGA:
             winners = self.rng.choice(self.population.shape[0],
                                       size=num_winners,
                                       p=win_prob)
-            
+        
+        elif num_winners % 2 != 0:
+            raise ValueError(
+                'num_winners must be even for reproduction, value given {} is odd'.format(num_winners))
+
+        # need to randomly pair the winners for recombination
+        winners_perm = winners.copy()
+        self.rng.shuffle(winners_perm)
+
+        # we can get pairs by stacking halves of the array after permutation
+        half_idx = int(winners.shape[0] / 2)
+        pairs = np.vstack((winners_perm[:half_idx], winners_perm[half_idx:]))
+        
         # I guess we're just going to accept that we replace only 
         # num_winner / 2 "losers" for now. one per "sexual pair"
-        
+
+        # also assuming fitness values are in [0, 1] does this break mny tests?
+        unfitness_values = 1 - fitness_values     
+        unfitness_values[winners] = 0  # can't pick winners as losers
+        lose_prob =  unfitness_values / np.sum(unfitness_values)
+
+        losers = self.rng.choice(self.population.shape[0],
+                                 size = pairs.shape[0],
+                                 p=lose_prob)
 
         
