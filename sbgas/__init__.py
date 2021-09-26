@@ -1,1 +1,2 @@
-from .sbmga import SBMGA
+from .sbmga import DiscreteSBMGA
+from .sbgenga import DiscreteSBGenGA

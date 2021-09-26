@@ -64,7 +64,29 @@ class DiscreteSBGenGA:
         lose_prob =  unfitness_values / np.sum(unfitness_values)
 
         losers = self.rng.choice(self.population.shape[0],
-                                 size = pairs.shape[0],
+                                 size=pairs.shape[0],
                                  p=lose_prob)
+
+        # now we can actually do the replacement
+        for loser_i in losers:
+            for gene_j in range(self.population.shape[1]):
+                # just to clean up some lines downstream
+                parents = pairs[loser_i]
+
+                # which parent contributes gene
+                if self.rng.uniform() < self.precomb:
+                    self.population[loser_i, gene_j] = self.population[parents[0], gene_j]
+                else:
+                    self.population[loser_i, gene_j] = self.population[parents[1], gene_j]
+                
+                # does the gene mutate
+                if self.rng.uniform() < self.pmutate:
+                    possible_mutants = np.array([base for base in self.alphabet 
+                                                 if base != self.population[loser_i, gene_j]])
+                    self.population[loser_i, gene_j] = self.rng.choice(possible_mutants)
+                
+        
+        return winners
+
 
         

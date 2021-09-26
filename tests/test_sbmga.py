@@ -1,6 +1,6 @@
 import numpy as np
 from numpy.core.fromnumeric import shape
-from sbgas.sbmga import SBMGA
+from sbgas.sbmga import DiscreteSBMGA
 
 # test parameters
 FFUNC = np.sum
@@ -14,7 +14,7 @@ DEMESIZE = 3
 ALPHABET = [0, 1]
 
 
-ga = SBMGA(FFUNC, POPSIZE, GENESIZE, MUTPROB, INFECTPROB, SBSIZE, DORMPROB, DEMESIZE, ALPHABET)
+ga = DiscreteSBMGA(FFUNC, POPSIZE, GENESIZE, MUTPROB, INFECTPROB, SBSIZE, DORMPROB, DEMESIZE, ALPHABET)
 
 def test_init():
     # get a bunch of flags
@@ -35,18 +35,18 @@ def test_tournament_basic():
 
 def test_tournament_mutation():
     # pass in a mutation probability of 1, other probs to zero
-    ga_mut = SBMGA(FFUNC, POPSIZE, GENESIZE, 1, 0, SBSIZE, 0, DEMESIZE, ALPHABET)
+    ga_mut = DiscreteSBMGA(FFUNC, POPSIZE, GENESIZE, 1, 0, SBSIZE, 0, DEMESIZE, ALPHABET)
     ga_mut._tournament(0, 1)
     assert np.array_equal(ga_mut.population[1], np.ones(GENESIZE))
 
 def test_tournament_infection():
-    ga_inf = SBMGA(FFUNC, POPSIZE, GENESIZE, 0, 1, SBSIZE, 0, DEMESIZE, ALPHABET)
+    ga_inf = DiscreteSBMGA(FFUNC, POPSIZE, GENESIZE, 0, 1, SBSIZE, 0, DEMESIZE, ALPHABET)
     ga_inf.population[0] = np.ones(GENESIZE)
     ga_inf._tournament(0, 1)
     assert np.array_equal(ga_inf.population[1], np.ones(GENESIZE))
 
 def test_tournament_dormancy():
-    ga_sb = SBMGA(FFUNC, POPSIZE, GENESIZE, 0, 0, SBSIZE, 1, DEMESIZE, ALPHABET)
+    ga_sb = DiscreteSBMGA(FFUNC, POPSIZE, GENESIZE, 0, 0, SBSIZE, 1, DEMESIZE, ALPHABET)
     # set so 0 still wins but we can see the change in the seed bank when 1 enters
     ga_sb.population[0] = np.ones(GENESIZE)
     ga_sb.population[1] = np.array([0, 0, 1])
@@ -54,7 +54,7 @@ def test_tournament_dormancy():
     assert np.array_equal(ga_sb.population[1], np.zeros(GENESIZE)) and np.sum(ga_sb.seed_bank) == 1
 
 def test_pick_competitors():
-    ga_comp = SBMGA(FFUNC, POPSIZE, GENESIZE, MUTPROB, INFECTPROB, SBSIZE, DORMPROB, 1, ALPHABET)
+    ga_comp = DiscreteSBMGA(FFUNC, POPSIZE, GENESIZE, MUTPROB, INFECTPROB, SBSIZE, DORMPROB, 1, ALPHABET)
     i, j = ga_comp._pick_competitors(4)
     assert i == 4 and j == 0
 
